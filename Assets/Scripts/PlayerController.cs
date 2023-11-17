@@ -9,8 +9,8 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        arduinoPort.DtrEnable = true;
-        arduinoPort.RtsEnable = true;
+        //arduinoPort.DtrEnable = true;
+        //arduinoPort.RtsEnable = true;
         arduinoPort.Open();
        arduinoPort.ReadTimeout = 50000;
         
@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour
             try
             {
                 Debug.Log("Hey!");
-                Debug.Log(arduinoPort.ReadByte());
+                Debug.Log(arduinoPort.ReadExisting());
                 //Debug.Log(arduinoPort.ReadLine());
                 //arduinoPort.Close();
             }

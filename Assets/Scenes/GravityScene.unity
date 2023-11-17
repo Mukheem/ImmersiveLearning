@@ -9328,6 +9328,7 @@ GameObject:
   - component: {fileID: 1283345533}
   - component: {fileID: 1283345532}
   - component: {fileID: 1283345536}
+  - component: {fileID: 1283345537}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -9425,6 +9426,103 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ecdf3773de204beca5a1dc60cae43fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1283345537
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1283345531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b91bae1ae651e43aca6c8036104e86ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  windowRect:
+    x: 0
+    y: 0
+    width: 0
+    height: 0
+  nodes:
+  - name: gameObject
+    text: Cube
+    nodeType: 0
+    objectTarget: {fileID: 0}
+    tooltip: GameObject
+    rect:
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    updated: 1
+  - name: id
+    text: 'ID: 0'
+    nodeType: 0
+    objectTarget: {fileID: 0}
+    tooltip: Controller ID
+    rect:
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    updated: 1
+  - name: pin
+    text: 'Pin: A0'
+    nodeType: 0
+    objectTarget: {fileID: 0}
+    tooltip: Arduino Analog Pin
+    rect:
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    updated: 1
+  - name: owner
+    text: Owner
+    nodeType: 2
+    objectTarget: {fileID: 0}
+    tooltip: ArdunityApp
+    rect:
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    updated: 1
+  - name: Value
+    text: Value
+    nodeType: 1
+    objectTarget: {fileID: 0}
+    tooltip: Input<float>
+    rect:
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    updated: 1
+  - name: AnalogInput
+    text: AnalogInput
+    nodeType: 1
+    objectTarget: {fileID: 0}
+    tooltip: AnalogInput
+    rect:
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    updated: 1
+  id: 9600
+  updated: 0
+  _owner: {fileID: 0}
+  _argument: []
+  _dirty: 0
+  _first: 0
+  _enableUpdate: 1
+  pin: 0
+  OnValueChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_CallsDirty: 1
+  _value: 0
 --- !u!1001 &1291264220
 PrefabInstance:
   m_ObjectHideFlags: 0
