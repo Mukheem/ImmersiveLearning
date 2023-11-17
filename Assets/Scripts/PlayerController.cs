@@ -24,9 +24,9 @@ public class PlayerController : MonoBehaviour
         {
             try
             {
-                Debug.Log("Hey!");
-                Debug.Log(arduinoPort.ReadExisting());
-                //Debug.Log(arduinoPort.ReadLine());
+               
+                
+                Debug.Log("Data From Arduino:"+arduinoPort.ReadLine());
                 //arduinoPort.Close();
             }
             catch (System.Exception)
