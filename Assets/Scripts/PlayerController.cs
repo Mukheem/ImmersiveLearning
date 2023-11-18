@@ -3,17 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO.Ports;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : Subject
 {
     SerialPort arduinoPort = new SerialPort("/dev/cu.usbmodem11201", 9600);
     // Start is called before the first frame update
     void Start()
     {
+        NotifyObservers();
         //arduinoPort.DtrEnable = true;
         //arduinoPort.RtsEnable = true;
-        arduinoPort.Open();
-       arduinoPort.ReadTimeout = 50000;
-        
+        //arduinoPort.Open();
+        arduinoPort.ReadTimeout = 50000;
+
     }
 
     // Update is called once per frame
@@ -24,9 +25,8 @@ public class PlayerController : MonoBehaviour
         {
             try
             {
-               
-                
-                Debug.Log("Data From Arduino:"+arduinoPort.ReadLine());
+
+                Debug.Log("Data From Arduino:" + arduinoPort.ReadLine());
                 //arduinoPort.Close();
             }
             catch (System.Exception)
@@ -36,7 +36,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            Debug.Log("Hey");
+            //Debug.Log("Hey");
         }
         transform.Translate(Vector3.forward * Time.deltaTime * Input.GetAxis("Horizontal"));
     }
