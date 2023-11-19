@@ -1,19 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.IO.Ports;
+
 
 public class PlayerController : Subject
 {
-    SerialPort arduinoPort = new SerialPort("/dev/cu.usbmodem11201", 9600);
+    GameController gameControllerRef = new GameController();
+    private Rigidbody playerRigidBody;
+
+
+    public void Awake()
+    {
+        gameControllerRef.ConnectionWithArduino(true);
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        NotifyObservers(PlayerActionsEnum.Intro);
-        //arduinoPort.DtrEnable = true;
-        //arduinoPort.RtsEnable = true;
-        //arduinoPort.Open();
-        arduinoPort.ReadTimeout = 50000;
+        playerRigidBody = GetComponent<Rigidbody>();
+        //NotifyObservers(PlayerActionsEnum.Intro);
+        
+
 
     }
 
@@ -21,31 +28,15 @@ public class PlayerController : Subject
     void Update()
     {
 
-        if (arduinoPort.IsOpen)
-        {
-            try
-            {
-
-                Debug.Log("Data From Arduino:" + arduinoPort.ReadLine());
-                //arduinoPort.Close();
-            }
-            catch (System.Exception)
-            {
-                throw;
-            }
-        }
-        else
-        {
-            //Debug.Log("Hey");
-        }
+        int upwardForce = 700;//gameControllerRef.ReadFromArduino();
+        playerRigidBody.AddForce(Vector3.up * upwardForce, ForceMode.Force);
         transform.Translate(Vector3.forward * Time.deltaTime * Input.GetAxis("Horizontal"));
     }
     void OnApplicationQuit()
     {
-        if (arduinoPort.IsOpen)
-        {
-            arduinoPort.Close();
-        }
+        gameControllerRef.ConnectionWithArduino(false);
     }
 
 }
+
+
