@@ -5,5 +5,5 @@ using UnityEngine;
 public interface IObserver
 {
     // Subject should use this method to communicate with the observer
-    public void OnNotify();
+    public void OnNotify(PlayerActionsEnum action);
 }

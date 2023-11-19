@@ -7,9 +7,13 @@ public class NarrationSystem : MonoBehaviour, IObserver
     [SerializeField]
     private Subject _playerSubject;
 
-    public void OnNotify()
+    public void OnNotify(PlayerActionsEnum action)
     {
-        Debug.Log("Bismillah");
+        if(action == PlayerActionsEnum.Intro)
+        {
+            Debug.Log("INTRO action played");
+        }
+        Debug.Log("LOG action played");
     }
 
     private void OnEnable()

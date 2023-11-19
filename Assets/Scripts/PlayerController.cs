@@ -9,7 +9,7 @@ public class PlayerController : Subject
     // Start is called before the first frame update
     void Start()
     {
-        NotifyObservers();
+        NotifyObservers(PlayerActionsEnum.Intro);
         //arduinoPort.DtrEnable = true;
         //arduinoPort.RtsEnable = true;
         //arduinoPort.Open();
