@@ -28,13 +28,15 @@ public class PlayerController : Subject
     void Update()
     {
 
-        int upwardForce = 700;//gameControllerRef.ReadFromArduino();
-        playerRigidBody.AddForce(Vector3.up * upwardForce, ForceMode.Force);
-        transform.Translate(Vector3.forward * Time.deltaTime * Input.GetAxis("Horizontal"));
+        //int upwardForce = gameControllerRef.ReadFromArduino();
+        //playerRigidBody.AddForce(Vector3.up * upwardForce, ForceMode.Force);
+       
+        //Debug.Log("Force:" + playerRigidBody.velocity.y);
+        //transform.Translate(Vector3.forward * Time.deltaTime * Input.GetAxis("Horizontal"));
     }
     void OnApplicationQuit()
     {
-        gameControllerRef.ConnectionWithArduino(false);
+        //gameControllerRef.ConnectionWithArduino(false);
     }
 
 }
