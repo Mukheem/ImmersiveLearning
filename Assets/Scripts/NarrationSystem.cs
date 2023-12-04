@@ -6,6 +6,7 @@ public class NarrationSystem : MonoBehaviour, IObserver
 {
     [SerializeField]
     private Subject _playerSubject;
+   
 
     public void OnNotify(PlayerActionsEnum action)
     {
@@ -19,11 +20,14 @@ public class NarrationSystem : MonoBehaviour, IObserver
     private void OnEnable()
     {
         _playerSubject.AddObserver(this);
+           
     }
 
     private void OnDisable()
     {
         _playerSubject.RemoveObserver(this);
     }
+
+    
 }
 

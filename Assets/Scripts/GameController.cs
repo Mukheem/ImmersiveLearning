@@ -4,12 +4,15 @@ using UnityEngine;
 using System;
 using System.IO.Ports;
 
-public class GameController 
+public class GameController : MonoBehaviour
 {
     // Serial Port to which Arduino is connected
     SerialPort arduinoPort = new SerialPort("/dev/cu.usbmodem11201", 9600);
 
-   
+    public AudioClip introClip;
+    AudioSource audioSource;
+    GameObject gravityText;
+
     // Method to connect/disconnect Arduino
     public void ConnectionWithArduino(bool makeConnection)
     {
@@ -62,5 +65,20 @@ public class GameController
         return valueFromArduinoSensor;
     }
 
-   
+    public void Start()
+    {
+        StartCoroutine(IntroNarration());
+    }
+
+    IEnumerator IntroNarration()
+    {
+        Debug.Log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+        if (!audioSource.isPlaying)
+        {
+            audioSource.clip = introClip;
+            audioSource.Play();
+            gravityText.SetActive(true);
+        }
+        yield return new WaitForSeconds(introClip.length);
+    }
 }
