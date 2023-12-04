@@ -3,11 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.IO.Ports;
+using WebSocketSharp;
 
 public class GameController : MonoBehaviour
 {
     // Serial Port to which Arduino is connected
     SerialPort arduinoPort = new SerialPort("/dev/cu.usbmodem11201", 9600);
+    // Websocet Service
+    WebSocket ws;
+    String esp32IPAddress = "172.20.10.11";
+    String esp32WebsocketPort = "81";
 
     public AudioClip introClip;
     AudioSource audioSource;
@@ -63,6 +68,33 @@ public class GameController : MonoBehaviour
         }
 
         return valueFromArduinoSensor;
+    }
+
+    // Method to connect/disconnect ESP32
+    void ConnectWithESP32()
+    {
+        Debug.Log("Connecting Unity with ESP32 via Websockets...");
+        ws = new WebSocket("ws://"+esp32IPAddress+":"+esp32WebsocketPort);
+        ws.OnOpen += (sender, e) =>
+        {
+            Debug.Log("WebSocket connected");
+            ws.Send("Hello from Unity!");
+        };
+        ws.OnMessage += (sender, e) =>
+        {
+            Debug.Log("Received message: " + e.Data);
+
+        };
+        ws.Connect();
+        Debug.Log("Websocket state - " + ws.ReadyState);
+    }
+
+    private void OnEnable()
+    {
+       
+
+        gravityText = GameObject.Find("Gravity Intro Text");
+        audioSource = GetComponent<AudioSource>();
     }
 
     public void Start()
