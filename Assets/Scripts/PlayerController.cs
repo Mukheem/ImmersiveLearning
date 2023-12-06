@@ -11,7 +11,8 @@ public class PlayerController : Subject
 
     public void Awake()
     {
-        gameControllerRef.ConnectionWithArduino(true);
+        //gameControllerRef.ConnectionWithArduino(true);
+        //gameControllerRef.ConnectWithESP32();
     }
 
     // Start is called before the first frame update

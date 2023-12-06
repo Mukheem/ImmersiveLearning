@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using System.IO.Ports;
 using WebSocketSharp;
+using UnityEngine.Video;
 
 public class GameController : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class GameController : MonoBehaviour
     public AudioClip introClip;
     AudioSource audioSource;
     GameObject gravityText;
+    GameObject videoPlayerQuad;
 
     // Method to connect/disconnect Arduino
     public void ConnectionWithArduino(bool makeConnection)
@@ -70,8 +72,11 @@ public class GameController : MonoBehaviour
         return valueFromArduinoSensor;
     }
 
+
+
+
     // Method to connect/disconnect ESP32
-    void ConnectWithESP32()
+    public void ConnectWithESP32()
     {
         Debug.Log("Connecting Unity with ESP32 via Websockets...");
         ws = new WebSocket("ws://"+esp32IPAddress+":"+esp32WebsocketPort);
@@ -91,26 +96,45 @@ public class GameController : MonoBehaviour
 
     private void OnEnable()
     {
-       
 
-        gravityText = GameObject.Find("Gravity Intro Text");
+        gravityText = GameObject.FindGameObjectWithTag("IntroText");
+        videoPlayerQuad = GameObject.FindGameObjectWithTag("VideoPlayer");
+        videoPlayerQuad.SetActive(false);
+        gravityText.SetActive(false);
         audioSource = GetComponent<AudioSource>();
     }
 
     public void Start()
     {
+        
         StartCoroutine(IntroNarration());
     }
 
     IEnumerator IntroNarration()
     {
-        Debug.Log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+        Debug.Log("Playing IntroNarration Coroutine...");
         if (!audioSource.isPlaying)
         {
-            audioSource.clip = introClip;
-            audioSource.Play();
+           // audioSource.clip = introClip;
+            audioSource.PlayOneShot(introClip);
+
             gravityText.SetActive(true);
         }
         yield return new WaitForSeconds(introClip.length);
+        
+        videoPlayerQuad.SetActive(true);
+        StartCoroutine(PlayVideo());
+        
+    }
+
+    IEnumerator PlayVideo()
+    {
+        VideoPlayer videoPlayer = videoPlayerQuad.GetComponent<VideoPlayer>();
+        Debug.Log("Playing Video...");
+        if (!videoPlayer.isPlaying)
+        {
+            videoPlayer.Play();
+        }
+        yield return new WaitForSeconds((float)videoPlayer.length);
     }
 }
