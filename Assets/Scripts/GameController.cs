@@ -5,6 +5,7 @@ using System;
 using System.IO.Ports;
 using WebSocketSharp;
 using UnityEngine.Video;
+using UnityEngine.Playables;
 
 public class GameController : MonoBehaviour
 {
@@ -19,6 +20,7 @@ public class GameController : MonoBehaviour
     AudioSource audioSource;
     GameObject gravityText;
     GameObject videoPlayerQuad;
+    PlayableDirector zoomToQuadPlayableDirector;
 
     // Method to connect/disconnect Arduino
     public void ConnectionWithArduino(bool makeConnection)
@@ -99,6 +101,7 @@ public class GameController : MonoBehaviour
 
         gravityText = GameObject.FindGameObjectWithTag("IntroText");
         videoPlayerQuad = GameObject.FindGameObjectWithTag("VideoPlayer");
+        zoomToQuadPlayableDirector = GameObject.FindGameObjectWithTag("ZoomToQuad").GetComponent<PlayableDirector>();
         videoPlayerQuad.SetActive(false);
         gravityText.SetActive(false);
         audioSource = GetComponent<AudioSource>();
@@ -129,6 +132,7 @@ public class GameController : MonoBehaviour
 
     IEnumerator PlayVideo()
     {
+        zoomToQuadPlayableDirector.Play();
         VideoPlayer videoPlayer = videoPlayerQuad.GetComponent<VideoPlayer>();
         Debug.Log("Playing Video...");
         if (!videoPlayer.isPlaying)
@@ -136,5 +140,6 @@ public class GameController : MonoBehaviour
             videoPlayer.Play();
         }
         yield return new WaitForSeconds((float)videoPlayer.length);
+        //zoomToQuadPlayableDirector.
     }
 }

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - IntroText
   - VideoPlayer
+  - ZoomToQuad
   layers:
   - Default
   - TransparentFX
