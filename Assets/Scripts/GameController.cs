@@ -139,7 +139,26 @@ public class GameController : MonoBehaviour
         {
             videoPlayer.Play();
         }
-        yield return new WaitForSeconds((float)videoPlayer.length);
-        //zoomToQuadPlayableDirector.
+        //yield return new WaitForSeconds((float)videoPlayer.length);
+        yield return new WaitForSeconds(7);
+        StartCoroutine(ZomOutFromQuad());
+    }
+
+    IEnumerator ZomOutFromQuad()
+    {
+       
+
+        float dt = (float)zoomToQuadPlayableDirector.duration;
+
+        while (dt > 0)
+        {
+            dt -= Time.deltaTime / (float)zoomToQuadPlayableDirector.duration;
+
+            zoomToQuadPlayableDirector.time = Mathf.Max(dt, 0);
+            zoomToQuadPlayableDirector.Evaluate();
+            yield return null;
+        }
+
+        
     }
 }
