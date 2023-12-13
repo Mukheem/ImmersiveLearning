@@ -395,7 +395,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 189546011}
-  - component: {fileID: 189546010}
+  - component: {fileID: 189546012}
   m_Layer: 0
   m_Name: LightController
   m_TagString: Untagged
@@ -403,23 +403,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &189546010
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 189546009}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1710f5fe9b7da4d5f8fffa977f36d2a8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  roomLight: {fileID: 723902243}
-  initialIntensity: 0
-  intensityChangeSpeed: 0.1
-  yellowColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  pinkColor: {r: 1, g: 0.5, b: 0.5, a: 1}
 --- !u!4 &189546011
 Transform:
   m_ObjectHideFlags: 0
@@ -435,6 +418,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 23
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &189546012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 189546009}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 348e6500e095641c0a31894f88176fff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneLight: {fileID: 723902243}
 --- !u!1001 &261201599
 PrefabInstance:
   m_ObjectHideFlags: 0
