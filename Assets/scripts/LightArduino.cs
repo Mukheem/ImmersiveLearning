@@ -13,9 +13,10 @@ public class LightArduino : MonoBehaviour
         // Open the serial port (change COM3 to your Arduino port)
         serialPort = new SerialPort("/dev/cu.usbmodem14201", 9600);
         serialPort.Open();
-        Debug.Log("Script is running.");
+
 
         // Display initial message
+        Debug.Log("Script is running la.");
         Debug.Log("Press 'L' to toggle the light on and off.");
         sceneLight.intensity = 0f;
     }
