@@ -59,15 +59,16 @@ void loop() {
     Serial.println("Client connected...");
 
     while (client.available()) {
-      if (client.poll()) {  //client.poll() checks if there are any new messages or events
-        Serial.println("Client sent a message...");
-        WebsocketsMessage msg = client.readBlocking();
-        digitalWrite(11, HIGH);  //Notify user to use force sensor
+      
+        Serial.println("Waiting for client to send a message...");
+        WebsocketsMessage msg = client.readBlocking();//readBlocking(removes the need for calling poll()) will return the first message or event received. readBlocking can also return Ping, Pong and Close messages.
+       
         // log
         Serial.print("Got Message: ");
         Serial.println(msg.data());
        
         if (msg.data().equalsIgnoreCase("Need Force")) {
+          digitalWrite(11, HIGH);  //Notify user to use force sensor
           Serial.println("Reading value from Force Sensor...");
           while (forceSensorValue <= 20) {
 
@@ -90,90 +91,10 @@ void loop() {
             }
           }
         }
-      }
-      delay(500);
+        
     }
     // close the connection
     client.close();
   }
-  delay(500);
+  //delay(500);
 }
-// #include <ArduinoWebsockets.h>
-
-// #include <WiFi.h>
-
-
-// const char* ssid     = "M";
-// const char* password = "123mukhee";
-
-// using namespace websockets;
-// WiFiServer server(80);
-// WebSocketServer webSocket = WebSocketServer(81);
-
-
-// void setup()
-// {
-//     Serial.begin(115200);
-//     pinMode(13, OUTPUT);      // set the LED pin mode
-
-//     delay(10);
-
-//     // We start by connecting to a WiFi network
-//     Serial.println();
-//     Serial.println();
-//     Serial.print("Connecting to: ");
-//     Serial.println(ssid);
-
-//     WiFi.begin(ssid, password);
-
-//     while (WiFi.status() != WL_CONNECTED) {
-//         delay(500);
-//         Serial.print(".");
-//     }
-
-//     Serial.println("");
-//     Serial.println("WiFi connected.");
-//     Serial.println("IP address: ");
-//     Serial.println(WiFi.localIP());
-//     //Beginning WifiServer
-//     server.begin();
-//     //Beginning Websocket Server
-//     webSocket.begin();
-//     webSocket.onEvent(webSocketEvent);
-// }
-
-// void loop(){
-
-//   webSocket.loop(); // This keeps the websocket connection open between client and server
-//  WiFiClient client = server.available();   // listen for incoming clients
-
-//   if (client) {                             // if you get a client,
-//     Serial.println("New Client.");           // print a message out the serial port
-//     String currentLine = "";                // make a String to hold incoming data from the client
-//     // loop while the client's connected - client.connected()
-//     // if there's bytes to read from the client, - client.available()
-
-//     // close the connection:
-//     client.stop();
-//     Serial.println("Client Disconnected.");
-//   }
-//    // Variable to store ADC value ( 0 to 1023 )
-//     int forceSensorValue;
-//     analogReadResolution(10);
-//     // analogRead function returns the integer 10 bit integer (0 to 1023)
-//     forceSensorValue = analogRead(A1);
-
-
-//   if (forceSensorValue > 7) {
-
-//     Serial.print(forceSensorValue,DEC);
-//     Serial.print("\n"); // Sending New Line character is important to read data in unity
-//       Serial.flush();
-//     digitalWrite(13, HIGH);
-//   } else {
-//     Serial.println(00,DEC);
-//     Serial.flush();
-//     digitalWrite(13, LOW);
-//   }
-//   delay(700);
-// }

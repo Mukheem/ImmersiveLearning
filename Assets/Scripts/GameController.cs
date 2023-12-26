@@ -13,7 +13,7 @@ public class GameController : MonoBehaviour
     SerialPort arduinoPort = new SerialPort("/dev/cu.usbmodem11201", 9600);
     // Websocet Service
     WebSocket ws;
-    String esp32IPAddress = "172.20.10.11";
+    String esp32IPAddress = "172.20.10.3";
     String esp32WebsocketPort = "81";
 
     public AudioClip introClip;
@@ -101,7 +101,7 @@ public class GameController : MonoBehaviour
 
     private void OnEnable()
     {
-
+        ConnectWithESP32();
         gravityText = GameObject.FindGameObjectWithTag("IntroText");
         videoPlayerQuad = GameObject.FindGameObjectWithTag("VideoPlayer");
         virtualCamZoomToQuad = GameObject.FindGameObjectWithTag("ZoomToQuad");
@@ -116,9 +116,19 @@ public class GameController : MonoBehaviour
 
     public void Start()
     {
+        //ws.Send("Need Force");
 
         StartCoroutine(IntroNarration());
-        //StartCoroutine(IntroToPractical());
+
+    }
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            
+            ws.Send("Need Force");
+            //ws.Close();
+        }
     }
 
     IEnumerator IntroNarration()
@@ -126,7 +136,7 @@ public class GameController : MonoBehaviour
         Debug.Log("Playing IntroNarration Coroutine...");
         if (!audioSource.isPlaying)
         {
-            // audioSource.clip = introClip;
+            
             audioSource.PlayOneShot(introClip);
 
             gravityText.SetActive(true);
@@ -147,15 +157,13 @@ public class GameController : MonoBehaviour
         {
             videoPlayer.Play();
         }
-        Debug.Log("Length is " + (float)videoPlayer.length);
+        
         yield return new WaitForSeconds((float)videoPlayer.length - 33.0f);
-        //yield return new WaitForSeconds(7);
         StartCoroutine(ZomOutFromQuad(videoPlayer)); // Starts co-routine to move back camera to original position. Parameter videoPlayer is used to close the quad when playing is finished.
     }
 
     IEnumerator ZomOutFromQuad(VideoPlayer videoPlayer)
     {
-
 
         float dt = (float)zoomToQuadPlayableDirector.duration;
 
@@ -176,9 +184,11 @@ public class GameController : MonoBehaviour
     {
         Debug.Log("Playing IntroToPractical Coroutine...");
         audioSource.PlayOneShot(introToPracticalClip);
+        // Total length of introToPracticalClip is 50 seconds. waiting here for 21 seconds and rest 29 seconds in next wait statement.
         yield return new WaitForSeconds(21.0f);
         ActivateCamera("CMFocusOnBall");
-        yield return new WaitForSeconds(introToPracticalClip.length);
+        yield return new WaitForSeconds(29.0f);
+        ws.Send("Need Force");
     }
     private void CloseQuad(VideoPlayer vp)
     {
