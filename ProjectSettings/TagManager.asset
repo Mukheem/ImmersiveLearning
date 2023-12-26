@@ -7,6 +7,7 @@ TagManager:
   - IntroText
   - VideoPlayer
   - ZoomToQuad
+  - CMFocusOnBall
   layers:
   - Default
   - TransparentFX

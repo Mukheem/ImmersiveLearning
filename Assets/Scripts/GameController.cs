@@ -17,9 +17,12 @@ public class GameController : MonoBehaviour
     String esp32WebsocketPort = "81";
 
     public AudioClip introClip;
+    public AudioClip introToPracticalClip;
     AudioSource audioSource;
     GameObject gravityText;
     GameObject videoPlayerQuad;
+    GameObject virtualCamZoomToQuad;
+    GameObject virtualCamFocusOnBall;
     PlayableDirector zoomToQuadPlayableDirector;
 
     // Method to connect/disconnect Arduino
@@ -27,12 +30,12 @@ public class GameController : MonoBehaviour
     {
         try
         {
-            
+
             if (makeConnection)
             {
                 Debug.Log("Connecting with Arduino...");
                 arduinoPort.Open();
-               
+
                 if (arduinoPort.IsOpen)
                 {
                     Debug.LogAssertion("Connection with Arduino established...");
@@ -50,8 +53,8 @@ public class GameController : MonoBehaviour
                     }
                 }
             }
-            
-           
+
+
         }
         catch (System.Exception)
         {
@@ -81,7 +84,7 @@ public class GameController : MonoBehaviour
     public void ConnectWithESP32()
     {
         Debug.Log("Connecting Unity with ESP32 via Websockets...");
-        ws = new WebSocket("ws://"+esp32IPAddress+":"+esp32WebsocketPort);
+        ws = new WebSocket("ws://" + esp32IPAddress + ":" + esp32WebsocketPort);
         ws.OnOpen += (sender, e) =>
         {
             Debug.Log("WebSocket connected");
@@ -101,7 +104,11 @@ public class GameController : MonoBehaviour
 
         gravityText = GameObject.FindGameObjectWithTag("IntroText");
         videoPlayerQuad = GameObject.FindGameObjectWithTag("VideoPlayer");
+        virtualCamZoomToQuad = GameObject.FindGameObjectWithTag("ZoomToQuad");
+        virtualCamFocusOnBall = GameObject.FindGameObjectWithTag("CMFocusOnBall");
         zoomToQuadPlayableDirector = GameObject.FindGameObjectWithTag("ZoomToQuad").GetComponent<PlayableDirector>();
+
+        ActivateCamera("ZoomToQuad");
         videoPlayerQuad.SetActive(false);
         gravityText.SetActive(false);
         audioSource = GetComponent<AudioSource>();
@@ -109,8 +116,9 @@ public class GameController : MonoBehaviour
 
     public void Start()
     {
-        
+
         StartCoroutine(IntroNarration());
+        //StartCoroutine(IntroToPractical());
     }
 
     IEnumerator IntroNarration()
@@ -118,16 +126,16 @@ public class GameController : MonoBehaviour
         Debug.Log("Playing IntroNarration Coroutine...");
         if (!audioSource.isPlaying)
         {
-           // audioSource.clip = introClip;
+            // audioSource.clip = introClip;
             audioSource.PlayOneShot(introClip);
 
             gravityText.SetActive(true);
         }
         yield return new WaitForSeconds(introClip.length);
-        
+
         videoPlayerQuad.SetActive(true);
         StartCoroutine(PlayVideo());
-        
+
     }
 
     IEnumerator PlayVideo()
@@ -139,14 +147,15 @@ public class GameController : MonoBehaviour
         {
             videoPlayer.Play();
         }
-        //yield return new WaitForSeconds((float)videoPlayer.length);
-        yield return new WaitForSeconds(7);
-        StartCoroutine(ZomOutFromQuad());
+        Debug.Log("Length is " + (float)videoPlayer.length);
+        yield return new WaitForSeconds((float)videoPlayer.length - 33.0f);
+        //yield return new WaitForSeconds(7);
+        StartCoroutine(ZomOutFromQuad(videoPlayer)); // Starts co-routine to move back camera to original position. Parameter videoPlayer is used to close the quad when playing is finished.
     }
 
-    IEnumerator ZomOutFromQuad()
+    IEnumerator ZomOutFromQuad(VideoPlayer videoPlayer)
     {
-       
+
 
         float dt = (float)zoomToQuadPlayableDirector.duration;
 
@@ -158,7 +167,46 @@ public class GameController : MonoBehaviour
             zoomToQuadPlayableDirector.Evaluate();
             yield return null;
         }
+        videoPlayer.loopPointReached += CloseQuad;
+        StartCoroutine(IntroToPractical());
+        CloseQuad(videoPlayer);
+    }
+    
+    IEnumerator IntroToPractical()
+    {
+        Debug.Log("Playing IntroToPractical Coroutine...");
+        audioSource.PlayOneShot(introToPracticalClip);
+        yield return new WaitForSeconds(21.0f);
+        ActivateCamera("CMFocusOnBall");
+        yield return new WaitForSeconds(introToPracticalClip.length);
+    }
+    private void CloseQuad(VideoPlayer vp)
+    {
+        Debug.Log("Disabling the Quad...");
+        videoPlayerQuad.SetActive(false);
+    }
+    private void ActivateCamera(String cameraTagName)
+    {
+        if (cameraTagName.Equals("ZoomToQuad"))
+        {
+            virtualCamFocusOnBall.SetActive(false);
+            virtualCamZoomToQuad.SetActive(true);
+        }
+        else if (cameraTagName.Equals("CMFocusOnBall"))
+        {
+            virtualCamZoomToQuad.SetActive(false);
+            virtualCamFocusOnBall.SetActive(true);
 
-        
+        }
     }
 }
+
+/*
+ * 
+Well, now it's time for some real-life magic.
+
+Welcome to our adventure at the Joy Land Park! Before we dive into the fun, let's learn something exciting! Do you see the glowing light? That's the signal! When it shines, it's time to press the magic force sensor connected to our redboard.
+When you gently press the sensor, it makes the ball in our scene float up high or down low.  The harder you press, the higher our magical ball floats!
+
+But remember, you can only press the sensor when the light is on. So, let's wait for the signal and then work our magic with the force sensor to make the ball dance in the air! Are you ready? Let's have some fun!
+*/
