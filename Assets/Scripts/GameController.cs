@@ -11,7 +11,7 @@ public class GameController : MonoBehaviour
 {
     // Serial Port to which Arduino is connected
     SerialPort arduinoPort = new SerialPort("/dev/cu.usbmodem11201", 9600);
-    // Websocet Service
+    // Websocket Service
     WebSocket ws;
     String esp32IPAddress = "172.20.10.3";
     String esp32WebsocketPort = "81";
@@ -24,6 +24,8 @@ public class GameController : MonoBehaviour
     GameObject virtualCamZoomToQuad;
     GameObject virtualCamFocusOnBall;
     PlayableDirector zoomToQuadPlayableDirector;
+    public Material moonSkyboxMaterial;
+    public Material jupiterSkyBoxMaterial;
 
     // Method to connect/disconnect Arduino
     public void ConnectionWithArduino(bool makeConnection)
@@ -99,6 +101,7 @@ public class GameController : MonoBehaviour
         Debug.Log("Websocket state - " + ws.ReadyState);
     }
 
+    // All the required initialisations and component extractions from the hierarchy
     private void OnEnable()
     {
         ConnectWithESP32();
@@ -116,18 +119,19 @@ public class GameController : MonoBehaviour
 
     public void Start()
     {
-        //ws.Send("Need Force");
-
+        // Starting the first co-routine
         StartCoroutine(IntroNarration());
+        //RenderSettings.skybox = moonSkyboxMaterial;
 
     }
+    // temporary
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            
+
             ws.Send("Need Force");
-            //ws.Close();
+
         }
     }
 
@@ -136,14 +140,12 @@ public class GameController : MonoBehaviour
         Debug.Log("Playing IntroNarration Coroutine...");
         if (!audioSource.isPlaying)
         {
-            
             audioSource.PlayOneShot(introClip);
-
             gravityText.SetActive(true);
         }
         yield return new WaitForSeconds(introClip.length);
 
-        videoPlayerQuad.SetActive(true);
+        videoPlayerQuad.SetActive(true); // Turning on the quad player
         StartCoroutine(PlayVideo());
 
     }
@@ -157,7 +159,7 @@ public class GameController : MonoBehaviour
         {
             videoPlayer.Play();
         }
-        
+
         yield return new WaitForSeconds((float)videoPlayer.length - 33.0f);
         StartCoroutine(ZomOutFromQuad(videoPlayer)); // Starts co-routine to move back camera to original position. Parameter videoPlayer is used to close the quad when playing is finished.
     }
@@ -179,7 +181,7 @@ public class GameController : MonoBehaviour
         StartCoroutine(IntroToPractical());
         CloseQuad(videoPlayer);
     }
-    
+
     IEnumerator IntroToPractical()
     {
         Debug.Log("Playing IntroToPractical Coroutine...");
@@ -188,13 +190,17 @@ public class GameController : MonoBehaviour
         yield return new WaitForSeconds(21.0f);
         ActivateCamera("CMFocusOnBall");
         yield return new WaitForSeconds(29.0f);
+
+        //Sending a request to ESP32-S2-Wroom-Thing Plus to read sensor value
         ws.Send("Need Force");
     }
+    //Method to close quad player
     private void CloseQuad(VideoPlayer vp)
     {
         Debug.Log("Disabling the Quad...");
         videoPlayerQuad.SetActive(false);
     }
+    //Method to switch cameras in the scene.
     private void ActivateCamera(String cameraTagName)
     {
         if (cameraTagName.Equals("ZoomToQuad"))
