@@ -58,8 +58,22 @@ public class ArduinoIntegration : MonoBehaviour
 
     void OpenConnection()
     {
-        Debug.Log("Connecting to Arduino");
-        portNum.Open();
+
+        //Debug.Log("Connecting to Arduino");
+        //portNum.Open();
+
+        try
+        {
+            Debug.Log("Connecting to Arduino ... ");
+            portNum.Open();
+            Debug.Log("Connection to Arduino completed");
+
+        }
+        catch (System.Exception)
+        {
+            throw;
+        }
+        
         //if (portNum.IsOpen)
         //{
         //    Debug.Log("It is opened");
@@ -86,15 +100,32 @@ public class ArduinoIntegration : MonoBehaviour
         //{
         //    Debug.LogWarning("Port is null!");
         //}
-        Debug.Log("I am here");
+
+        //Debug.Log("I am here");
     }
 
     void OnApplicationQuit()
     {
-        if (portNum != null && portNum.IsOpen)
+        try
         {
-            portNum.Close();
-            Debug.Log("Port Closed!");
+            if (portNum.IsOpen)
+            {
+                Debug.Log("disconnecting from Arduino ...");
+                portNum.Close();
+                if (!portNum.IsOpen)
+                {
+                    Debug.Log("Connection from Arduino stopped");
+                }
+            }
         }
+        catch (System.Exception)
+        {
+            throw;
+        }
+        //if (portNum != null && portNum.IsOpen)
+        //{
+        //    portNum.Close();
+        //    Debug.Log("Port Closed!");
+        //}
     }
 }
