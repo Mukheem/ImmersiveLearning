@@ -20,12 +20,19 @@ public abstract class Subject : MonoBehaviour
     }
 
     // Notify each observer when an event has happened.
-    protected void NotifyObservers(PlayerActionsEnum action)
+    protected void NotifyObservers(int forceValue)
     {
         _observers.ForEach((_observer) =>
         {
-            _observer.OnNotify(action);
+            _observer.OnNotify(forceValue);
         });
     }
+    //protected void NotifyObservers(PlayerActionsEnum action)
+    //{
+    //    _observers.ForEach((_observer) =>
+    //    {
+    //        _observer.OnNotify(action);
+    //    });
+    //}
 
 }

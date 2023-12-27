@@ -16,7 +16,10 @@ public class NarrationSystem : MonoBehaviour, IObserver
         }
         Debug.Log("LOG action played");
     }
-
+    public void OnNotify(int forceValue)
+    {
+        Debug.Log(forceValue);
+    }
     private void OnEnable()
     {
         _playerSubject.AddObserver(this);

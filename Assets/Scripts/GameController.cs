@@ -7,7 +7,8 @@ using WebSocketSharp;
 using UnityEngine.Video;
 using UnityEngine.Playables;
 
-public class GameController : MonoBehaviour
+// Subject in the Observer Pattern
+public class GameController : Subject
 {
     // Serial Port to which Arduino is connected
     SerialPort arduinoPort = new SerialPort("/dev/cu.usbmodem11201", 9600);
@@ -82,7 +83,7 @@ public class GameController : MonoBehaviour
 
 
 
-    // Method to connect/disconnect ESP32
+    // Method to connect ESP32
     public void ConnectWithESP32()
     {
         Debug.Log("Connecting Unity with ESP32 via Websockets...");
@@ -95,7 +96,7 @@ public class GameController : MonoBehaviour
         ws.OnMessage += (sender, e) =>
         {
             Debug.Log("Received message: " + e.Data);
-
+            NotifyObservers(int.Parse(e.Data));
         };
         ws.Connect();
         Debug.Log("Websocket state - " + ws.ReadyState);
@@ -119,6 +120,7 @@ public class GameController : MonoBehaviour
 
     public void Start()
     {
+        
         // Starting the first co-routine
         StartCoroutine(IntroNarration());
         //RenderSettings.skybox = moonSkyboxMaterial;
@@ -214,6 +216,12 @@ public class GameController : MonoBehaviour
             virtualCamFocusOnBall.SetActive(true);
 
         }
+    }
+
+    void OnApplicationQuit()
+    {
+        ws.Close();
+        Debug.Log("WebSocket closed on application exit");
     }
 }
 
