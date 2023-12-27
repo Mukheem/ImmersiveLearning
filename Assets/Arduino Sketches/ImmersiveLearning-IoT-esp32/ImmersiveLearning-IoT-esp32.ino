@@ -66,7 +66,15 @@ void loop() {
         // log
         Serial.print("Got Message: ");
         Serial.println(msg.data());
-       
+        // Condition to blink the light at the start of program as a hello indication
+        if(msg.data().startsWith("Hello")){
+          for(int i=0;i<4;i++){
+            digitalWrite(11, HIGH);  //Blink on 
+            delay(170);
+            digitalWrite(11, LOW);  //Blink off 
+          }
+          client.send(String(10));  
+        }
         if (msg.data().equalsIgnoreCase("Need Force")) {
           digitalWrite(11, HIGH);  //Notify user to use force sensor
           Serial.println("Reading value from Force Sensor...");
