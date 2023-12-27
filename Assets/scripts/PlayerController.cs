@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO.Ports;
 
-public class SantaController : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     public float moveSpeed = 5f;
     public float pushForceMultiplier = 2f;
