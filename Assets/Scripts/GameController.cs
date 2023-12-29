@@ -17,8 +17,12 @@ public class GameController : Subject
     String esp32IPAddress = "172.20.10.3";
     String esp32WebsocketPort = "81";
 
+    private float gravityModifier = 1.0f;
+
     public AudioClip introClip;
     public AudioClip introToPracticalClip;
+    public AudioClip earthGravityNarrationClip;
+    public AudioClip pauseNPlayClip;
     AudioSource audioSource;
     GameObject gravityText;
     GameObject videoPlayerQuad;
@@ -123,10 +127,12 @@ public class GameController : Subject
         
         // Starting the first co-routine
         StartCoroutine(IntroNarration());
+        //Modifying Gravity across the scene
+        Physics.gravity *= gravityModifier;
         //RenderSettings.skybox = moonSkyboxMaterial;
 
     }
-    // temporary
+    // If the user needs the practicality again and again
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
@@ -195,6 +201,14 @@ public class GameController : Subject
 
         //Sending a request to ESP32-S2-Wroom-Thing Plus to read sensor value
         ws.Send("Need Force");
+
+        //Narrates the practicality of earth's Gravity and waits till the completion
+        audioSource.PlayOneShot(earthGravityNarrationClip);
+        yield return new WaitForSeconds(earthGravityNarrationClip.length);
+
+        //Narrates the pauseNPlay rule and waits till the completion
+        audioSource.PlayOneShot(pauseNPlayClip);
+        yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.C));
     }
     //Method to close quad player
     private void CloseQuad(VideoPlayer vp)
@@ -233,4 +247,13 @@ Welcome to our adventure at the Joy Land Park! Before we dive into the fun, let'
 When you gently press the sensor, it makes the ball in our scene float up high or down low.  The harder you press, the higher our magical ball floats!
 
 But remember, you can only press the sensor when the light is on. So, let's wait for the signal and then work our magic with the force sensor to make the ball dance in the air! Are you ready? Let's have some fun!
-*/
+
+ ***
+ *
+ So when you throw the ball, the kinetic energy it gets from you counteracts the earth's gravity, causing it to move upwards. At the peak, vertical kinetic energy that the ball possesses becomes zero and then gravity becomes dominant pulling it back down
+
+
+
+Great job! I hope you've grasped the basics of how gravity operates on Earth. Now, it's time to have fun with the sensor and the ball. The program pauses until you press the 'C' key on the keyboard. Whenever you're ready to continue, press 'C'. Until then, you can keep pressing the 'Space bar' on the keyboard to enjoy the hands-on activity as many times as you like.
+ 
+ */
