@@ -1,11 +1,21 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+
 
 public class Ball : MonoBehaviour
 {
     public float forceMultiplier = 10f; // Adjust this value to control the force applied.
+    public AudioSource narration;
+    private float narrationLenght = 106.0f;
+   
 
     void Start()
     {
+        narration = GameObject.Find("Balls").GetComponent<AudioSource>();
+
+        StartCoroutine("AllowSensing");
+
         // Get the Rigidbody component attached to the ball.
         Rigidbody rb = GetComponent<Rigidbody>();
 
@@ -24,11 +34,11 @@ public class Ball : MonoBehaviour
     void Update()
     {
         // Check if the touch is detected
-        if (ArduinoIntegration.isTouchDetected)
-        {
-            ApplyForceToBall();
-            ArduinoIntegration.isTouchDetected = false; // Reset the flag so it won't be detected again
-        }
+        //if (ArduinoIntegration.isTouchDetected)
+        //{
+        //    ApplyForceToBall();
+        //    ArduinoIntegration.isTouchDetected = false; // Reset the flag so it won't be detected again
+        //}
     }
 
     void ApplyForceToBall()
@@ -38,4 +48,18 @@ public class Ball : MonoBehaviour
         Vector3 initialForce = new Vector3(1f, 0f, 0f); // Change the direction as needed.
         rb.AddForce(initialForce * forceMultiplier, ForceMode.Impulse);
     }
+
+    public IEnumerator AllowSensing(float waitTime)
+    {
+        narration.Play();
+        yield return new WaitForSeconds(narrationLenght);
+
+        if (ArduinoIntegration.isTouchDetected)
+        {
+            ApplyForceToBall();
+            ArduinoIntegration.isTouchDetected = false; // Reset the flag so it won't be detected again
+        }
+    }
+
+
 }
