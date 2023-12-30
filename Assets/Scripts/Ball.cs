@@ -5,51 +5,44 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
-    public float forceMultiplier = 10f; // Adjust this value to control the force applied.
-    public AudioSource narration;
+    private AudioSource narration;
+
     private float narrationLenght = 106.0f;
+    public float forceMultiplier = 10f;
    
 
     void Start()
     {
         narration = GameObject.Find("Balls").GetComponent<AudioSource>();
 
-        StartCoroutine("AllowSensing");
+        StartCoroutine(AllowSensing());
 
         // Get the Rigidbody component attached to the ball.
         Rigidbody rb = GetComponent<Rigidbody>();
 
         // Check if a Rigidbody component is attached.
-        if (rb != null)
+        if (rb == null)
         {
-            // Do not apply the initial force here
-        }
-        else
-        {
-            Debug.LogError("Rigidbody component not found. Make sure to attach a Rigidbody to the ball GameObject.");
+            Debug.LogError("Rigidbody component not found.");
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        // Check if the touch is detected
-        //if (ArduinoIntegration.isTouchDetected)
-        //{
-        //    ApplyForceToBall();
-        //    ArduinoIntegration.isTouchDetected = false; // Reset the flag so it won't be detected again
-        //}
+
     }
 
     void ApplyForceToBall()
     {
         // Apply an initial force to the ball in a specific direction.
         Rigidbody rb = GetComponent<Rigidbody>();
-        Vector3 initialForce = new Vector3(1f, 0f, 0f); // Change the direction as needed.
+        Vector3 initialForce = new Vector3(1f, 0f, 0f);
+
         rb.AddForce(initialForce * forceMultiplier, ForceMode.Impulse);
     }
 
-    public IEnumerator AllowSensing(float waitTime)
+    public IEnumerator AllowSensing()
     {
         narration.Play();
         yield return new WaitForSeconds(narrationLenght);
@@ -57,6 +50,7 @@ public class Ball : MonoBehaviour
         if (ArduinoIntegration.isTouchDetected)
         {
             ApplyForceToBall();
+            yield return new WaitForSeconds(20);
             ArduinoIntegration.isTouchDetected = false; // Reset the flag so it won't be detected again
         }
     }
