@@ -6,7 +6,9 @@ using System.IO.Ports;
 public class ArduinoIntegration : MonoBehaviour
 {
     SerialPort portNum = new SerialPort("/dev/cu.usbmodem13201", 9600);
-    public static bool isTouchDetected = false; // Flag to indicate touch detection
+
+    // Flag to indicate touch detection
+    public static bool isTouchDetected = false; 
 
     // Start is called before the first frame update
     void Start()
@@ -24,43 +26,16 @@ public class ArduinoIntegration : MonoBehaviour
             Debug.Log(a);
             if (a.Contains("TOUCH_DETECTED"))
             {
-                isTouchDetected = true; // Set the flag to true when touch is detected
+                // Set the flag to true when touch is detected
+                isTouchDetected = true; 
                 Debug.Log("The Sensor is Touched");
             }
 
         }
-        //if (portNum.IsOpen)
-        //{
-        //    string a = portNum.ReadLine();
-        //    Debug.Log(a);
-        //}
-        //if (portNum.IsOpen)
-        //{
-        //    try
-        //    {
-
-        //        string serialInput = portNum.ReadLine();
-        //        Debug.Log(serialInput);
-
-        //        // Check if the received message is "TOUCH_DETECTED"
-        //        if (serialInput.Contains("TOUCH_DETECTED"))
-        //        {
-        //            isTouchDetected = true; // Set the flag to true when touch is detected
-        //            Debug.Log("The Sensor is Touched");
-        //        }
-        //    }
-        //    catch (System.Exception e)
-        //    {
-        //        Debug.LogWarning(e.Message);
-        //    }
-        //}
     }
 
     void OpenConnection()
     {
-
-        //Debug.Log("Connecting to Arduino");
-        //portNum.Open();
 
         try
         {
@@ -74,34 +49,6 @@ public class ArduinoIntegration : MonoBehaviour
             throw;
         }
         
-        //if (portNum.IsOpen)
-        //{
-        //    Debug.Log("It is opened");
-        //    string a = portNum.ReadLine();
-        //    Debug.Log(a);
-        //}
-
-
-        //if (portNum != null)
-        //{
-        //    if (portNum.IsOpen)
-        //    {
-        //        portNum.Close();
-        //        Debug.Log("Closing port, because it was already open!");
-        //    }
-        //    else
-        //    {
-        //        portNum.Open();
-        //        portNum.ReadTimeout = 9000;
-        //        Debug.Log("Port Opened!");
-        //    }
-        //}
-        //else
-        //{
-        //    Debug.LogWarning("Port is null!");
-        //}
-
-        //Debug.Log("I am here");
     }
 
     void OnApplicationQuit()
@@ -122,10 +69,5 @@ public class ArduinoIntegration : MonoBehaviour
         {
             throw;
         }
-        //if (portNum != null && portNum.IsOpen)
-        //{
-        //    portNum.Close();
-        //    Debug.Log("Port Closed!");
-        //}
     }
 }
