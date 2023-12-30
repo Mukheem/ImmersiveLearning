@@ -10,22 +10,22 @@ public class PlayerController : MonoBehaviour
     public float staticFrictionThreshold = 500;  // Adjust the threshold as needed
     public float staticFrictionForce = 5f;        // Adjust the static friction force as needed
 
-    private Rigidbody santaRigidbody;
+    private Rigidbody girlRigidbody;
     private SerialPort sp = new SerialPort("/dev/cu.usbmodem14201", 9600);
 
     void Start()
     {
-        santaRigidbody = GetComponent<Rigidbody>();
+        girlRigidbody = GetComponent<Rigidbody>();
 
-        if (santaRigidbody == null)
+        if (girlRigidbody == null)
         {
-            Debug.LogError("Rigidbody not found on Santa GameObject!");
+            Debug.LogError("Rigidbody not found on Girl GameObject!");
         }
 
         if (sp != null)
         {
             sp.Open();
-            Debug.Log("Script is running. SantaController");
+            Debug.Log("Script is running. PlayerController");
         }
         else
         {
@@ -35,23 +35,23 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        MoveSanta();
+        MoveGirl();
     }
 
-    void MoveSanta()
+    void MoveGirl()
     {
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
 
         Vector3 movement = new Vector3(horizontal, 0f, vertical);
-        santaRigidbody.AddForce(movement * moveSpeed);
-        Debug.Log("Santa is moving.");
+        girlRigidbody.AddForce(movement * moveSpeed);
+        Debug.Log("Girl is moving.");
 
         // Print Santa's position for debugging
-        Debug.Log("Santa Position: " + transform.position);
+        Debug.Log("Girl Position: " + transform.position);
 
         // Print Santa's velocity for debugging
-        Debug.Log("Santa Velocity: " + santaRigidbody.velocity.magnitude);
+        Debug.Log("Girl Velocity: " + girlRigidbody.velocity.magnitude);
 
         if (sp.IsOpen)
         {
@@ -73,10 +73,10 @@ public class PlayerController : MonoBehaviour
                     float pushForce = forceValue * pushForceMultiplier;
 
                     // Apply static friction if the force sensor reading suggests static friction
-                    if (forceValue > staticFrictionThreshold && santaRigidbody.velocity.magnitude < 0.1f)
+                    if (forceValue > staticFrictionThreshold && girlRigidbody.velocity.magnitude < 0.1f)
                     {
                         // Apply static friction force to oppose the attempted motion
-                        santaRigidbody.AddForce(-santaRigidbody.velocity.normalized * staticFrictionForce, ForceMode.Impulse);
+                        girlRigidbody.AddForce(-girlRigidbody.velocity.normalized * staticFrictionForce, ForceMode.Impulse);
                         Debug.Log("Static friction applied!");
                     }
                     else
@@ -84,7 +84,7 @@ public class PlayerController : MonoBehaviour
                         // Apply force to the gift in the forward direction of Santa
                         // Note: Replace 'other' with the actual reference to the gift's Rigidbody
                         giftCollider.GetComponent<Rigidbody>().AddForce(transform.forward * pushForce, ForceMode.Impulse);
-                        Debug.Log("Santa pushed the gift with force: " + pushForce);
+                        Debug.Log("Girl pushed the gift with force: " + pushForce);
                     }
                 }
             }
