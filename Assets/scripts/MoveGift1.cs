@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO.Ports;
 
-public class MoveGift : MonoBehaviour
+public class MoveGift1 : MonoBehaviour
 {
     public string portName = "/dev/cu.usbmodem14201";  // Change to your Arduino port
     public int baudRate = 9600;       // Match with Arduino baud rate
@@ -42,43 +42,43 @@ public class MoveGift : MonoBehaviour
 
         // Initialize AudioSource
         audioSource = GetComponent<AudioSource>();
+        Debug.Log("before playallaudioclips");
+
+        // Start playing audio clips sequentially
+        StartCoroutine(PlayAllAudioClips());
     }
 
-    void Update()
+    IEnumerator PlayAllAudioClips()
     {
-        if (serialPort.IsOpen)
+        Debug.Log("in PlayALLAudioClip");
+        yield return StartCoroutine(PlayAudioClip(audioClip1));
+        yield return StartCoroutine(PlayAudioClip(audioClip2));
+        yield return StartCoroutine(PlayAudioClip(audioClip3));
+
+        while (true)
         {
+            // Read the FSR value from Arduino
+            int fsrValue = int.Parse(serialPort.ReadLine());
+            Debug.Log("FSR Value: " + fsrValue);
+            Debug.Log("Static friction is applied, push harder to overcome the static friction and move the gift");
+            yield return StartCoroutine(PlayAudioClip(audioClip4));
 
-            StartCoroutine(PlayAudioClip(audioClip1));
-            StartCoroutine(PlayAudioClip(audioClip2));
-            StartCoroutine(PlayAudioClip(audioClip3));
-            try
+            // Check if the force exceeds the threshold
+            if (fsrValue > forceThreshold && !isMoving)
             {
-                // Read the FSR value from Arduino
-                int fsrValue = int.Parse(serialPort.ReadLine());
-                Debug.Log("FSR Value: " + fsrValue);
-                Debug.Log("Static friction is appied, push harder to overcome the static friction and move the gift");
-                StartCoroutine(PlayAudioClip(audioClip4));
-                // Check if the force exceeds the threshold
-                if (fsrValue > forceThreshold && !isMoving)
-                {
-                    // Apply force to move the gift
-                    float moveAmount = fsrValue / forceThreshold;
-                    StartCoroutine(MoveGift1(moveAmount));
+                // Apply force to move the gift
+                float moveAmount = fsrValue / forceThreshold;
+                StartCoroutine(MoveGift(moveAmount));
 
-                    Debug.Log("Moving the gift. You have overcome static friction!");
-                    //Debug.Log("Gift Position: " + transform.position);
-                    StartCoroutine(PlayAudioClip(audioClip5));
-                }
-            }
-            catch (System.Exception ex)
-            {
-                Debug.LogError("Error reading from Arduino: " + ex.Message);
+                Debug.Log("Moving the gift. You have overcome static friction!");
+                // Debug.Log("Gift Position: " + transform.position);
+                yield return StartCoroutine(PlayAudioClip(audioClip5));
+                break;
             }
         }
     }
 
-    IEnumerator MoveGift1(float moveAmount)
+    IEnumerator MoveGift(float moveAmount)
     {
         isMoving = true;
 
@@ -97,8 +97,10 @@ public class MoveGift : MonoBehaviour
 
     IEnumerator PlayAudioClip(AudioClip clip)
     {
-        if (clip != null && audioSource != null)
+        
+        if (clip != null && audioSource != null && !audioSource.isPlaying)
         {
+            Debug.Log("in PlayAudioClip IF");
             // Assign the audio clip and play
             audioSource.clip = clip;
             audioSource.Play();

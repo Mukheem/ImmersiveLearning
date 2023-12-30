@@ -7,6 +7,7 @@ public class LightArduino : MonoBehaviour
 {
     public Light sceneLight;
     SerialPort serialPort;
+   
 
     void Start()
     {
@@ -19,7 +20,12 @@ public class LightArduino : MonoBehaviour
         Debug.Log("Script is running la.");
         Debug.Log("Press 'L' to toggle the light on and off.");
         sceneLight.intensity = 0f;
+
+        // Setup AudioSource for playing sound
+
+        
     }
+
 
     void Update()
     {
