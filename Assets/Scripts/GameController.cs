@@ -132,7 +132,7 @@ public class GameController : Subject
         
         // Starting the first co-routine
         StartCoroutine(IntroNarration());
-        //Modifying Gravity across the scene
+        
         //Updating gravity across the scene
         changeGravityModifier(gravityModifier);
 
@@ -271,6 +271,7 @@ public class GameController : Subject
 
         StartCoroutine(OutroNarration());
     }
+
     IEnumerator OutroNarration()
     {
         Debug.Log("Playing OutroNarration Coroutine...");
@@ -283,12 +284,14 @@ public class GameController : Subject
 
 
     }
+
     //Method to close quad player
     private void CloseQuad(VideoPlayer vp)
     {
         Debug.Log("Disabling the Quad...");
         videoPlayerQuad.SetActive(false);
     }
+
     //Method to switch cameras in the scene.
     private void ActivateCamera(String cameraTagName)
     {
@@ -305,6 +308,7 @@ public class GameController : Subject
         }
     }
 
+    //Closing websocket upon application quit
     void OnApplicationQuit()
     {
         ws.Close();

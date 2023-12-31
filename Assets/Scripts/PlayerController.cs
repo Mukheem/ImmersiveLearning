@@ -50,10 +50,7 @@ public class PlayerController : MonoBehaviour, IObserver
     }
     // --Observer Pattern Ends
 
-    public void Start()
-    {
-       // playerRigidBody.AddForce(0, 100, 0, ForceMode.Force);
-    }
+  
     public void FixedUpdate()
     {
         while (_levitateBall)
@@ -62,22 +59,8 @@ public class PlayerController : MonoBehaviour, IObserver
             _levitateBall = false;
         }
         
-        //if (Input.GetKeyDown(KeyCode.Space))
-        //{
-        //    playerRigidBody.AddForce(0, 100, 0, ForceMode.Force);
-        //}
     }
 
-    /*
-     * 
-     *   //int upwardForce = gameControllerRef.ReadFromArduino();
-        //playerRigidBody.AddForce(Vector3.up * upwardForce, ForceMode.Force);
-
-        //Debug.Log("Force:" + playerRigidBody.velocity.y);
-        //transform.Translate(Vector3.forward * Time.deltaTime * Input.GetAxis("Horizontal"));
-
-
-        */
 }
 
 
