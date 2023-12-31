@@ -2029,31 +2029,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 126d619cf4daa52469682f85c1378b4a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -35.200474
+      value: -0.00028751045
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 126d619cf4daa52469682f85c1378b4a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.719846
+      value: -1.9951557
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 126d619cf4daa52469682f85c1378b4a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 5.6514206
+      value: 0.1391167
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 126d619cf4daa52469682f85c1378b4a, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.99088675
+      value: 0.99992347
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 126d619cf4daa52469682f85c1378b4a, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.08400877
+      value: 0.0074954564
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 126d619cf4daa52469682f85c1378b4a, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.10405189
+      value: -0.009818852
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 126d619cf4daa52469682f85c1378b4a, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.01610099
+      value: 0.00077315234
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: 126d619cf4daa52469682f85c1378b4a, type: 3}
       propertyPath: m_RootOrder
@@ -3906,7 +3906,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1
+      value: 0
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -3931,7 +3931,15 @@ MonoBehaviour:
   introClip: {fileID: 8300000, guid: 9926400336e6b4e57915b75334b7ca56, type: 3}
   introToPracticalClip: {fileID: 8300000, guid: 60eddcad0f8b341569ee5f876f730f94,
     type: 3}
-  moonSkyboxMaterial: {fileID: 2100000, guid: 6ce8a414eb32d4b29bf2c9799c6d5594, type: 2}
+  earthGravityNarrationClip: {fileID: 8300000, guid: cfe7cdf090d2948a18b41cbe7b2c0deb,
+    type: 3}
+  pauseNPlayClip: {fileID: 8300000, guid: 342ef6f35cf3c400ca61fa28dbffce5e, type: 3}
+  moonGravityNarrationClip: {fileID: 8300000, guid: ab84e89620f9245e1acf602b1f41c7fa,
+    type: 3}
+  jupiterGravityNarrationClip: {fileID: 8300000, guid: ac83cc34b4595431dafafe72ffde8535,
+    type: 3}
+  outroClip: {fileID: 8300000, guid: fbc2c7ba992564e7ba3cf1703ed6622b, type: 3}
+  moonSkyboxMaterial: {fileID: 2100000, guid: 092d6d1b406ed4683add74bb059cd80d, type: 2}
   jupiterSkyBoxMaterial: {fileID: 2100000, guid: c0be1c3001bcd4232a6491ad834d380e,
     type: 2}
 --- !u!4 &472162209

@@ -18,11 +18,16 @@ public class GameController : Subject
     String esp32WebsocketPort = "81";
 
     private float gravityModifier = 1.0f;
+    private float moonGravityModifier = 0.1667f;
+    private float jupiterGravityModifier = 2.4f;
 
     public AudioClip introClip;
     public AudioClip introToPracticalClip;
     public AudioClip earthGravityNarrationClip;
     public AudioClip pauseNPlayClip;
+    public AudioClip moonGravityNarrationClip;
+    public AudioClip jupiterGravityNarrationClip;
+    public AudioClip outroClip;
     AudioSource audioSource;
     GameObject gravityText;
     GameObject videoPlayerQuad;
@@ -128,8 +133,9 @@ public class GameController : Subject
         // Starting the first co-routine
         StartCoroutine(IntroNarration());
         //Modifying Gravity across the scene
-        Physics.gravity *= gravityModifier;
-        //RenderSettings.skybox = moonSkyboxMaterial;
+        //Updating gravity across the scene
+        changeGravityModifier(gravityModifier);
+
 
     }
     // If the user needs the practicality again and again
@@ -202,6 +208,7 @@ public class GameController : Subject
         //Sending a request to ESP32-S2-Wroom-Thing Plus to read sensor value
         ws.Send("Need Force");
 
+        yield return new WaitForSeconds(5.0f); //waiting for the user to find the sensor and use it. then the narration can start.
         //Narrates the practicality of earth's Gravity and waits till the completion
         audioSource.PlayOneShot(earthGravityNarrationClip);
         yield return new WaitForSeconds(earthGravityNarrationClip.length);
@@ -209,6 +216,72 @@ public class GameController : Subject
         //Narrates the pauseNPlay rule and waits till the completion
         audioSource.PlayOneShot(pauseNPlayClip);
         yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.C));
+        //Change camera view to Narrator
+        ActivateCamera("ZoomToQuad");
+
+        StartCoroutine(changeToMoon());
+
+    }
+
+    IEnumerator changeToMoon()
+    {
+        Debug.Log("Change to Moon Coroutine...");
+        //Updating gravity across the scene
+        changeGravityModifier(moonGravityModifier);
+
+        
+        audioSource.PlayOneShot(moonGravityNarrationClip);
+        // Waiting 8 seconds so that we change the skybox inline to the narration
+        yield return new WaitForSeconds(8.0f);
+        RenderSettings.skybox = moonSkyboxMaterial;
+
+        yield return new WaitForSeconds(moonGravityNarrationClip.length-7.0f);
+        ActivateCamera("CMFocusOnBall");
+
+        //Sending a request to ESP32-S2-Wroom-Thing Plus to read sensor value
+        ws.Send("Need Force");
+               
+        yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.C));
+        //Change camera view to Narrator
+        ActivateCamera("ZoomToQuad");
+        StartCoroutine(changeToJupiter());
+    }
+
+    IEnumerator changeToJupiter()
+    {
+        Debug.Log("Change to Jupiter Coroutine...");
+        //Updating gravity across the scene
+        changeGravityModifier(jupiterGravityModifier);
+
+
+        audioSource.PlayOneShot(jupiterGravityNarrationClip);
+        // Waiting 8 seconds so that we change the skybox inline to the narration
+        yield return new WaitForSeconds(10.0f);
+        RenderSettings.skybox = jupiterSkyBoxMaterial;
+
+        yield return new WaitForSeconds(jupiterGravityNarrationClip.length - 10.0f);
+        ActivateCamera("CMFocusOnBall");
+
+        //Sending a request to ESP32-S2-Wroom-Thing Plus to read sensor value
+        ws.Send("Need Force");
+
+        yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.C));
+        //Change camera view to Narrator
+        ActivateCamera("ZoomToQuad");
+
+        StartCoroutine(OutroNarration());
+    }
+    IEnumerator OutroNarration()
+    {
+        Debug.Log("Playing OutroNarration Coroutine...");
+
+        audioSource.PlayOneShot(outroClip);
+        
+        yield return new WaitForSeconds(outroClip.length);
+
+        Application.Quit();
+
+
     }
     //Method to close quad player
     private void CloseQuad(VideoPlayer vp)
@@ -237,6 +310,12 @@ public class GameController : Subject
         ws.Close();
         Debug.Log("WebSocket closed on application exit");
     }
+    //Method to modify Gravity across the scene
+    protected void changeGravityModifier(float gravityModifierValue)
+    {
+        Debug.Log("Changing Gravity to: " + gravityModifierValue);
+        Physics.gravity *= gravityModifierValue;
+    }
 }
 
 /*
@@ -255,5 +334,13 @@ But remember, you can only press the sensor when the light is on. So, let's wait
 
 
 Great job! I hope you've grasped the basics of how gravity operates on Earth. Now, it's time to have fun with the sensor and the ball. The program pauses until you press the 'C' key on the keyboard. Whenever you're ready to continue, press 'C'. Until then, you can keep pressing the 'Space bar' on the keyboard to enjoy the hands-on activity as many times as you like.
- 
+
+I hope you enjoyed our gravity experiment on the Moon! Now, let's explore how it changes on the giant planet in our solar system, Jupiter. Unlike the Moon, Jupiter's gravity is incredibly strong--about 2.4 times stronger than Earth's! If you were there, you'd feel much heavier. You can redo the experiment to feel how it would be on Jupiter!
+
+Thank you all for being part of our gravity exploration today! I trust you've discovered how gravity varies across different planets, offering us a glimpse into the diverse nature of our universe. Keep exploring and diving into the wonders of physics?it's an endless journey filled with remarkable discoveries!
+
+
+
+Yours John, Signing off.
+        
  */
