@@ -8,22 +8,22 @@ public class MoveGift1 : MonoBehaviour
     public string portName = "/dev/cu.usbmodem14201";  // Change to your Arduino port
     public int baudRate = 9600;       // Match with Arduino baud rate
 
-    public float forceThreshold = 800.0f;  // Adjust the threshold based on your FSR characteristics
-    public float moveSpeed = 0.5f;
-    public float moveDistance = 0.1f;  // Distance to move when force threshold is surpassed
+    public float forceThreshold;  // Adjust the threshold based on your FSR characteristics
 
     public AudioClip audioClip1;
     public AudioClip audioClip2;
     public AudioClip audioClip3;
-    public AudioClip audioClip4;
-    public AudioClip audioClip5;
+
+    public float moveSpeed;
+    public float moveDistance; // Distance to move when force threshold is surpassed
 
     private SerialPort serialPort;
-    private bool isMoving = false;
-    private Vector3 originalPosition;
     private AudioSource audioSource;
 
-    void Start()
+    private bool isClipPlaying = false;
+    private bool clip2Played = false;
+
+    void Start()    // checking for port here
     {
         serialPort = new SerialPort(portName, baudRate);
         serialPort.Open();
@@ -37,12 +37,8 @@ public class MoveGift1 : MonoBehaviour
             Debug.LogError("Failed to open serial port.");
         }
 
-        // Store the original position of the gift
-        originalPosition = transform.position;
-
         // Initialize AudioSource
         audioSource = GetComponent<AudioSource>();
-        Debug.Log("before playallaudioclips");
 
         // Start playing audio clips sequentially
         StartCoroutine(PlayAllAudioClips());
@@ -50,67 +46,88 @@ public class MoveGift1 : MonoBehaviour
 
     IEnumerator PlayAllAudioClips()
     {
-        Debug.Log("in PlayALLAudioClip");
         yield return StartCoroutine(PlayAudioClip(audioClip1));
+
+        // Check for user input (L key) after playing audio clip 1
+        yield return StartCoroutine(WaitForUserInput(KeyCode.L));
+
+        // Play audio clip 2
         yield return StartCoroutine(PlayAudioClip(audioClip2));
-        yield return StartCoroutine(PlayAudioClip(audioClip3));
 
-        while (true)
-        {
-            // Read the FSR value from Arduino
-            int fsrValue = int.Parse(serialPort.ReadLine());
-            Debug.Log("FSR Value: " + fsrValue);
-            Debug.Log("Static friction is applied, push harder to overcome the static friction and move the gift");
-            yield return StartCoroutine(PlayAudioClip(audioClip4));
+        // Now continuously read the force sensor value
+        StartCoroutine(ReadForceSensor());
 
-            // Check if the force exceeds the threshold
-            if (fsrValue > forceThreshold && !isMoving)
-            {
-                // Apply force to move the gift
-                float moveAmount = fsrValue / forceThreshold;
-                StartCoroutine(MoveGift(moveAmount));
 
-                Debug.Log("Moving the gift. You have overcome static friction!");
-                // Debug.Log("Gift Position: " + transform.position);
-                yield return StartCoroutine(PlayAudioClip(audioClip5));
-                break;
-            }
-        }
-    }
-
-    IEnumerator MoveGift(float moveAmount)
-    {
-        isMoving = true;
-
-        // Calculate the target position
-        Vector3 targetPosition = originalPosition + Vector3.left * moveDistance * moveAmount;
-
-        // Move the gift smoothly
-        while (transform.position != targetPosition)
-        {
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
-            yield return null;
-        }
-
-        isMoving = false;
     }
 
     IEnumerator PlayAudioClip(AudioClip clip)
     {
-        
         if (clip != null && audioSource != null && !audioSource.isPlaying)
         {
-            Debug.Log("in PlayAudioClip IF");
             // Assign the audio clip and play
             audioSource.clip = clip;
             audioSource.Play();
 
             // Wait for the clip to finish playing
-            yield return new WaitForSeconds(clip.length);
+            while (audioSource.isPlaying)
+            {
+                isClipPlaying = true;
+                yield return null;
+            }
+
+            isClipPlaying = false;
         }
     }
 
-    void OnDestroy()
+    IEnumerator WaitForUserInput(KeyCode key) // waiting for L key
+    {
+        while (!Input.GetKeyDown(key))
+        {
+            yield return null;
+        }
+    }
+
+    IEnumerator ReadForceSensor()   // reading force sensor values for arduino
+    {
+        while (true)
+        {
+            if (serialPort.IsOpen && serialPort.BytesToRead > 0 && !isClipPlaying)
+            {
+                // Read force sensor value from Arduino
+                string line = serialPort.ReadLine();
+
+                // Try to parse the received string as an integer
+                if (int.TryParse(line, out int fsrValue))
+                {
+                    Debug.Log("Force Sensor Value: " + fsrValue);
+
+                    // Move the gift if the force sensor value is more than 300
+                    if (fsrValue > forceThreshold)
+                    {
+                        MoveGift();
+
+                        yield return StartCoroutine(PlayAudioClip(audioClip3));
+
+                    }
+                }
+            }
+            yield return null;
+        }
+    }
+
+    void MoveGift()
+    {
+        // Move the gift smoothly
+        transform.Translate(Vector3.right * moveSpeed * moveDistance * Time.deltaTime);
+
+        Debug.Log("Moving the gift. You have overcome static friction!");
+
+
+    }
+
+
+
+void OnDestroy()
     {
         if (serialPort != null && serialPort.IsOpen)
         {

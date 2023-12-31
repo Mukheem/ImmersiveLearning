@@ -7,7 +7,8 @@ public class LightArduino : MonoBehaviour
 {
     public Light sceneLight;
     SerialPort serialPort;
-   
+    
+
 
     void Start()
     {

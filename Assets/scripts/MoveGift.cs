@@ -42,6 +42,7 @@ public class MoveGift : MonoBehaviour
 
         // Initialize AudioSource
         audioSource = GetComponent<AudioSource>();
+
     }
 
     void Update()
