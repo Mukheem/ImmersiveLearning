@@ -71,3 +71,8 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 *.mov
+
+.DS_Store
+Assets/.DS_Store
+Assets/Settings/URP-HighFidelity-Renderer.asset
+ProjectSettings/Packages/com.unity.testtools.codecoverage/Settings.json
