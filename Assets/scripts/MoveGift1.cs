@@ -5,7 +5,7 @@ using System.IO.Ports;
 
 public class MoveGift1 : MonoBehaviour
 {
-    public string portName = "/dev/cu.usbmodem14201";  // Change to your Arduino port
+    public string portName = "/dev/cu.usbmodem14101";  // Change to your Arduino port
     public int baudRate = 9600;       // Match with Arduino baud rate
 
     public float forceThreshold;  // Adjust the threshold based on your FSR characteristics
@@ -13,6 +13,7 @@ public class MoveGift1 : MonoBehaviour
     public AudioClip audioClip1;
     public AudioClip audioClip2;
     public AudioClip audioClip3;
+    public AudioClip audioClip4;
 
     public float moveSpeed;
     public float moveDistance; // Distance to move when force threshold is surpassed
@@ -23,9 +24,12 @@ public class MoveGift1 : MonoBehaviour
     private bool isClipPlaying = false;
     private bool clip2Played = false;
 
+    
+
     void Start()    // checking for port here
     {
         serialPort = new SerialPort(portName, baudRate);
+        Debug.Log(serialPort.IsOpen);
         serialPort.Open();
 
         if (serialPort.IsOpen)
@@ -95,18 +99,20 @@ public class MoveGift1 : MonoBehaviour
             {
                 // Read force sensor value from Arduino
                 string line = serialPort.ReadLine();
-
+                
                 // Try to parse the received string as an integer
                 if (int.TryParse(line, out int fsrValue))
                 {
                     Debug.Log("Force Sensor Value: " + fsrValue);
 
-                    // Move the gift if the force sensor value is more than 300
+
+                    // Move the gift if the force sensor value is more than threshhold
                     if (fsrValue > forceThreshold)
                     {
                         MoveGift();
+                        
 
-                        yield return StartCoroutine(PlayAudioClip(audioClip3));
+                     yield return StartCoroutine(PlayAudioClip(audioClip3));
 
                     }
                 }
@@ -122,12 +128,13 @@ public class MoveGift1 : MonoBehaviour
 
         Debug.Log("Moving the gift. You have overcome static friction!");
 
-
+        
     }
 
+    
 
 
-void OnDestroy()
+    void OnDestroy()
     {
         if (serialPort != null && serialPort.IsOpen)
         {

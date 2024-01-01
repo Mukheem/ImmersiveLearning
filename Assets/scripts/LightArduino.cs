@@ -13,7 +13,8 @@ public class LightArduino : MonoBehaviour
     void Start()
     {
         // Open the serial port (change COM3 to your Arduino port)
-        serialPort = new SerialPort("/dev/cu.usbmodem14201", 9600);
+        serialPort = new SerialPort("/dev/cu.usbmodem14101", 9600);
+        Debug.Log(serialPort.IsOpen);
         serialPort.Open();
 
 

@@ -2105,12 +2105,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 017d0529555554186bfebe2460a74846, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  portName: /dev/cu.usbmodem14201
+  portName: /dev/cu.usbmodem14101
   baudRate: 9600
-  forceThreshold: 300
+  forceThreshold: 870
   audioClip1: {fileID: 8300000, guid: 38e916f1c537346eb9839a623f83d2c6, type: 3}
   audioClip2: {fileID: 8300000, guid: ec5af5944edab49c1b711b6f0760c79c, type: 3}
   audioClip3: {fileID: 8300000, guid: c2f656ccf876146ecb0eddddfa4ab1ac, type: 3}
+  audioClip4: {fileID: 8300000, guid: 3cdee2bcff91d4d2bba1c7cabe8733ad, type: 3}
   moveSpeed: 10
   moveDistance: 2
 --- !u!1 &1359006317
@@ -2751,7 +2752,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 434110, guid: 24b4c5dc305499e44b4cdfad4149b9b6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.984
+      value: 0.95
       objectReference: {fileID: 0}
     - target: {fileID: 434110, guid: 24b4c5dc305499e44b4cdfad4149b9b6, type: 3}
       propertyPath: m_LocalPosition.z
