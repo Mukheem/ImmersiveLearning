@@ -9,6 +9,7 @@ public class Ball : MonoBehaviour
 
     private float narrationLenght = 106.0f;
     public float forceMultiplier = 10f;
+
    
 
     void Start()
@@ -46,11 +47,11 @@ public class Ball : MonoBehaviour
     {
         narration.Play();
         yield return new WaitForSeconds(narrationLenght);
-
+        // = true
         if (ArduinoIntegration.isTouchDetected)
         {
             ApplyForceToBall();
-            yield return new WaitForSeconds(20);
+            yield return new WaitForSeconds(2);
             ArduinoIntegration.isTouchDetected = false; // Reset the flag so it won't be detected again
         }
     }

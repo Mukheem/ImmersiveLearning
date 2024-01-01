@@ -5,7 +5,8 @@ using System.IO.Ports;
 
 public class ArduinoIntegration : MonoBehaviour
 {
-    SerialPort portNum = new SerialPort("/dev/cu.usbmodem13201", 9600);
+    SerialPort portNum = new SerialPort("/dev/cu.usbmodem113201", 9600);
+
 
     // Flag to indicate touch detection
     public static bool isTouchDetected = false; 
