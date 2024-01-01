@@ -2107,7 +2107,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   portName: /dev/cu.usbmodem14101
   baudRate: 9600
-  forceThreshold: 870
+  forceThreshold: 500
   audioClip1: {fileID: 8300000, guid: 38e916f1c537346eb9839a623f83d2c6, type: 3}
   audioClip2: {fileID: 8300000, guid: ec5af5944edab49c1b711b6f0760c79c, type: 3}
   audioClip3: {fileID: 8300000, guid: c2f656ccf876146ecb0eddddfa4ab1ac, type: 3}
