@@ -19,7 +19,7 @@ public class GameController : Subject
 
     private float gravityModifier = 1.0f;
     private float moonGravityModifier = 0.1667f;
-    private float jupiterGravityModifier = 2.4f;
+    private float jupiterGravityModifier = 3.5f;
 
     public AudioClip introClip;
     public AudioClip introToPracticalClip;
@@ -129,10 +129,11 @@ public class GameController : Subject
 
     public void Start()
     {
-        
+
         // Starting the first co-routine
         StartCoroutine(IntroNarration());
-        
+       
+
         //Updating gravity across the scene
         changeGravityModifier(gravityModifier);
 
