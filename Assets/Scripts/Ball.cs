@@ -10,13 +10,14 @@ public class Ball : MonoBehaviour
     private float narrationLenght = 106.0f;
     public float forceMultiplier = 10f;
 
-   
+
 
     void Start()
     {
         narration = GameObject.Find("Balls").GetComponent<AudioSource>();
 
         StartCoroutine(AllowSensing());
+
 
         // Get the Rigidbody component attached to the ball.
         Rigidbody rb = GetComponent<Rigidbody>();
@@ -31,7 +32,6 @@ public class Ball : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //nothing
     }
 
     void ApplyForceToBall()
@@ -47,13 +47,19 @@ public class Ball : MonoBehaviour
     {
         narration.Play();
         yield return new WaitForSeconds(narrationLenght);
-        // = true
-        if (ArduinoIntegration.isTouchDetected)
+
+        while (true)
         {
-            ApplyForceToBall();
-            yield return new WaitForSeconds(2);
-            ArduinoIntegration.isTouchDetected = false; // Reset the flag so it won't be detected again
+            if (ArduinoIntegration.isTouchDetected)
+            {
+                Debug.Log("Force is applied");
+                ApplyForceToBall();
+                break;
+            }
+            else
+                yield return new WaitForSeconds(0.1f);
         }
+        
     }
 
 

@@ -4,8 +4,8 @@
 
 LiquidCrystal lcd(1, 2, 4, 5, 6, 7);
 
-#define PIN            11   
-#define NUMPIXELS      24  
+#define PIN 11
+#define NUMPIXELS 24
 const int fsrPin = A1;  // Connecting the force sensor to analog pin A1
 int fsrValue;           // Variable to store FSR reading
 
@@ -24,12 +24,11 @@ void setup() {
 
 void loop() {
 
-  int fsrValue;  // Read the FSR sensor value
-  
+  int fsrValue = analogRead(fsrPin);
   //First check if the touch sensor is touched
   if (digitalRead(8) == HIGH) {
-    Serial.print("TOUCH_DETECTED");
-    Serial.print("\n");
+    Serial.println("TOUCH_PRESSED");
+    //Serial.print("\n");
     Serial.flush();
     lcd.setCursor(0, 0);
     lcd.print("Sensor is touched");
@@ -38,24 +37,22 @@ void loop() {
   }
 
   //If the touch sensor is free, read the force sensor value
-  else if(digitalRead(8) == LOW){
-    Serial.println("Touch is free");
-    fsrValue =  analogRead(fsrPin);
-    Serial.println(fsrValue); 
+  else if (digitalRead(8) == LOW) {
+    Serial.println("TOUCH_RELEASE");
+    Serial.flush();
+  }
+  //     // delay(800);
 
-      // delay(800);                    
+  if (Serial.available() > 0) {
+    char data = Serial.read();
+    Serial.print("Received data: ");
+    Serial.println(data);
 
-    if (Serial.available() > 0) {
-      char data = Serial.read();
-      Serial.print("Received data: ");
-      Serial.println(data);
-
-      if (data == 'L') {
-        // Toggle lights on and off
-        lightsOn = !lightsOn;
-        updateLights();
-        Serial.println(lightsOn ? "Lights turned on." : "Lights turned off.");
-      }
+    if (data == 'L') {
+      // Toggle lights on and off
+      lightsOn = !lightsOn;
+      updateLights();
+      Serial.println(lightsOn ? "Lights turned on." : "Lights turned off.");
     }
   }
 }
@@ -64,16 +61,12 @@ void updateLights() {
   for (int i = 0; i < NUMPIXELS; i++) {
     if (lightsOn) {
       // Turn on all the lights with white color
-      strip.setPixelColor(i, strip.Color(255, 255, 255)); // Set color to white
+      strip.setPixelColor(i, strip.Color(255, 255, 255));  // Set color to white
     } else {
       // Turn off all the lights
-      strip.setPixelColor(i, strip.Color(0, 0, 0)); // Set color to off (black)
+      strip.setPixelColor(i, strip.Color(0, 0, 0));  // Set color to off (black)
     }
   }
 
   strip.show();
 }
-  
-
-
-

@@ -12,7 +12,7 @@ PlayerSettings:
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: DefaultCompany
+  companyName: IoT-HT2023
   productName: ImmersiveLearning
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
@@ -137,7 +137,10 @@ PlayerSettings:
     16:9: 1
     Others: 1
   bundleVersion: 0.1.0
-  preloadedAssets: []
+  preloadedAssets:
+  - {fileID: 11400000, guid: 8d821f73173a849f2a85415e44180372, type: 2}
+  - {fileID: 11400000, guid: 57bee4bf042b040d497cb2da7c4412b7, type: 2}
+  - {fileID: 665522099081855194, guid: 71260ae54db334d87a175982794d9eed, type: 2}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
