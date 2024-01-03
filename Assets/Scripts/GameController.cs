@@ -33,6 +33,7 @@ public class GameController : Subject
     GameObject videoPlayerQuad;
     GameObject virtualCamZoomToQuad;
     GameObject virtualCamFocusOnBall;
+    GameObject gameMenu;
     PlayableDirector zoomToQuadPlayableDirector;
     public Material moonSkyboxMaterial;
     public Material jupiterSkyBoxMaterial;
@@ -120,6 +121,7 @@ public class GameController : Subject
         virtualCamZoomToQuad = GameObject.FindGameObjectWithTag("ZoomToQuad");
         virtualCamFocusOnBall = GameObject.FindGameObjectWithTag("CMFocusOnBall");
         zoomToQuadPlayableDirector = GameObject.FindGameObjectWithTag("ZoomToQuad").GetComponent<PlayableDirector>();
+        gameMenu = GameObject.Find("GameMenu");
 
         ActivateCamera("ZoomToQuad");
         videoPlayerQuad.SetActive(false);
@@ -151,6 +153,7 @@ public class GameController : Subject
 
     IEnumerator IntroNarration()
     {
+        yield return new WaitForSeconds(gameMenu.GetComponent<GameMenuManager>().waitSeconds);
         Debug.Log("Playing IntroNarration Coroutine...");
         if (!audioSource.isPlaying)
         {

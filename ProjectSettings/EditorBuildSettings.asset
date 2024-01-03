@@ -8,7 +8,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/HomeScene.unity
     guid: 006cb196ab8e744b29feec3b089950ac
   - enabled: 1
@@ -20,4 +20,6 @@ EditorBuildSettings:
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 43bd4a4e6a4a64914b2994a424d965bb,
       type: 2}
     com.unity.xr.openxr.settings4: {fileID: 11400000, guid: 3447f206c391a44c0bb7340ad47eb918,
+      type: 2}
+    xr.sdk.mock-hmd.settings: {fileID: 11400000, guid: c434dbea4ab3cb54ca4984957a5c1f3e,
       type: 2}

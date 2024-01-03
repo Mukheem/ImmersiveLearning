@@ -12,11 +12,12 @@ public class PlayerController : MonoBehaviour, IObserver
     private Rigidbody playerRigidBody;
     private bool _levitateBall = false;
     int modifiedForceValue = 0;
-
+    
     private void OnEnable()
     {
         _subjectGameController.AddObserver(this);
         playerRigidBody = this.GetComponent<Rigidbody>(); //Getting player's rigid body
+        
 
     }
 
