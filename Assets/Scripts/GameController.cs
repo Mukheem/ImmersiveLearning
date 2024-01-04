@@ -19,7 +19,7 @@ public class GameController : Subject
 
     private float gravityModifier = 1.0f;
     private float moonGravityModifier = 0.1667f;
-    private float jupiterGravityModifier = 2.4f;
+    private float jupiterGravityModifier = 3.4f;
 
     public AudioClip introClip;
     public AudioClip introToPracticalClip;
@@ -127,6 +127,7 @@ public class GameController : Subject
         videoPlayerQuad.SetActive(false);
         gravityText.SetActive(false);
         audioSource = GetComponent<AudioSource>();
+        Debug.Log("On Enable executed...");
     }
 
     public void Start()
