@@ -21,6 +21,11 @@ public class PlayerController : MonoBehaviour, IObserver
 
     }
 
+    public void Start()
+    {
+
+    }
+
     //When force is applied, Game controller notifies and passes on the force value to PlayerController which activates the levitation.
     public void OnNotify(int forceValue)
     {

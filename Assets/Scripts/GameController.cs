@@ -176,8 +176,8 @@ public class GameController : Subject
         {
             videoPlayer.Play();
         }
-
-        yield return new WaitForSeconds((float)videoPlayer.length - 33.0f);
+        yield return new WaitForSeconds((float)videoPlayer.length); // removing the time substraction as camera move back is not woking in VR
+        //yield return new WaitForSeconds((float)videoPlayer.length - 33.0f);
         StartCoroutine(ZomOutFromQuad(videoPlayer)); // Starts co-routine to move back camera to original position. Parameter videoPlayer is used to close the quad when playing is finished.
     }
 
