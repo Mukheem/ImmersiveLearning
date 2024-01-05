@@ -17,9 +17,10 @@ public class GameController : Subject
     String esp32IPAddress = "172.20.10.3";
     String esp32WebsocketPort = "81";
 
-    private float gravityModifier = 1.0f;
-    private float moonGravityModifier = 0.1667f;
-    private float jupiterGravityModifier = 4.0f;
+    private float gravityModifier = 9.81f;
+    private float moonGravityModifier = 1.62f;
+    private float jupiterGravityModifier = 24.79f;
+    public float currentGravityModifier;
 
     public AudioClip introClip;
     public AudioClip introToPracticalClip;
@@ -320,7 +321,9 @@ public class GameController : Subject
     protected void changeGravityModifier(float gravityModifierValue)
     {
         Debug.Log("Changing Gravity to: " + gravityModifierValue);
-        Physics.gravity *= gravityModifierValue;
+        Physics.gravity= new Vector3(0, -gravityModifierValue, 0);
+        Debug.Log("Current Gravity is: " + Physics.gravity);
+        currentGravityModifier = gravityModifierValue;
     }
 }
 

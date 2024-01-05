@@ -21,33 +21,26 @@ public class PlayerController : MonoBehaviour, IObserver
 
     }
 
-    public void Start()
-    {
-
-    }
-
     //When force is applied, Game controller notifies and passes on the force value to PlayerController which activates the levitation.
     public void OnNotify(int forceValue)
     {
          modifiedForceValue = forceValue;
         if (forceValue <= 50)
         {
-            modifiedForceValue = 100;
+            modifiedForceValue = 150;
         }
-        else if (forceValue > 50 && forceValue <= 100)
+        else if (forceValue > 50 && forceValue <= 150)
         {
-            modifiedForceValue = 100;
+            modifiedForceValue = 200;
         }
         else if(forceValue>100 && forceValue <= 300)
         {
             modifiedForceValue = 300;
         }
-        
-        
+               
         Debug.Log("Actual ForceValue:"+forceValue);
         Debug.Log("Modified ForceValue:"+modifiedForceValue);
         _levitateBall = true;
-        
     }
 
     private void OnDisable()
