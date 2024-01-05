@@ -32,15 +32,15 @@ public class PlayerController : MonoBehaviour, IObserver
          modifiedForceValue = forceValue;
         if (forceValue <= 50)
         {
-            modifiedForceValue = 170;
+            modifiedForceValue = 100;
         }
-        else if (forceValue > 170 && forceValue <= 300)
+        else if (forceValue > 50 && forceValue <= 100)
+        {
+            modifiedForceValue = 100;
+        }
+        else if(forceValue>100 && forceValue <= 300)
         {
             modifiedForceValue = 300;
-        }
-        else if(forceValue>300 && forceValue <= 500)
-        {
-            modifiedForceValue = 500;
         }
         
         

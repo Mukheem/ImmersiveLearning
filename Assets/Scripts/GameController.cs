@@ -19,7 +19,7 @@ public class GameController : Subject
 
     private float gravityModifier = 1.0f;
     private float moonGravityModifier = 0.1667f;
-    private float jupiterGravityModifier = 3.3f;
+    private float jupiterGravityModifier = 4.0f;
 
     public AudioClip introClip;
     public AudioClip introToPracticalClip;
