@@ -23,8 +23,9 @@ public class MoveGift1 : MonoBehaviour
 
     private bool isClipPlaying = false;
     private bool clip2Played = false;
-
     
+
+
 
     void Start()    // checking for port here
     {
@@ -52,11 +53,14 @@ public class MoveGift1 : MonoBehaviour
     {
         yield return StartCoroutine(PlayAudioClip(audioClip1));
 
+        Debug.Log("Audio one played");
+
         // Check for user input (L key) after playing audio clip 1
         yield return StartCoroutine(WaitForUserInput(KeyCode.L));
 
         // Play audio clip 2
         yield return StartCoroutine(PlayAudioClip(audioClip2));
+     
 
         // Now continuously read the force sensor value
         StartCoroutine(ReadForceSensor());
@@ -95,8 +99,11 @@ public class MoveGift1 : MonoBehaviour
     {
         while (true)
         {
+            Debug.Log("1st if");
             if (serialPort.IsOpen && serialPort.BytesToRead > 0 && !isClipPlaying)
             {
+
+                Debug.Log("2nd if");
                 // Read force sensor value from Arduino
                 string line = serialPort.ReadLine();
                 
@@ -105,14 +112,15 @@ public class MoveGift1 : MonoBehaviour
                 {
                     Debug.Log("Force Sensor Value: " + fsrValue);
 
-
+                    Debug.Log("3rd if");
                     // Move the gift if the force sensor value is more than threshhold
                     if (fsrValue > forceThreshold)
                     {
+                        Debug.Log("4th if");
                         MoveGift();
-                        
+                        Debug.Log("4th if");
 
-                     yield return StartCoroutine(PlayAudioClip(audioClip3));
+                        yield return StartCoroutine(PlayAudioClip(audioClip3));
 
                     }
                 }
